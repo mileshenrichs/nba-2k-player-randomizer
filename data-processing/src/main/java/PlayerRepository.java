@@ -134,7 +134,7 @@ public class PlayerRepository {
     private boolean seasonStatIsGood(SeasonStatline statline) {
         return statline.year != null && statline.playerName != null
                 && statline.pointsScored != null && statline.teamCode != null
-                && statline.position != null;
+                && statline.position != null && statline.gamesPlayed != null;
     }
 
     private Integer intOrNull(String data) {
