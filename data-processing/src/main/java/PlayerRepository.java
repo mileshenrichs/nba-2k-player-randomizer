@@ -1,9 +1,6 @@
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerRepository {
     private Map<String, Position> positionCodeMap;
@@ -43,8 +40,47 @@ public class PlayerRepository {
         return null;
     }
 
-    void getPlayers() {
+    List<Player> getPlayers() {
+        Map<String, Player> players = new HashMap<>();
 
+        for(SeasonStatline statline : getSeasonStatlines()) {
+            Player player = new Player(statline.playerName, statline.position);
+            if(!players.containsKey(player.name)) {
+                player.teams = new ArrayList<>();
+                player.teams.add(statline.teamCode);
+                player.earliestYearPlayed = statline.year;
+                player.latestYearPlayed = statline.year;
+                player.careerGames = statline.gamesPlayed;
+                player.careerPoints = statline.pointsScored;
+
+                players.put(player.name, player);
+            } else {
+                player = players.get(player.name);
+
+                player.position = statline.position;
+                if(!player.teams.contains(statline.teamCode)) {
+                    player.teams.add(statline.teamCode);
+                }
+                player.earliestYearPlayed = Math.min(player.earliestYearPlayed, statline.year);
+                player.latestYearPlayed = Math.max(player.latestYearPlayed, statline.year);
+                player.careerGames += statline.gamesPlayed;
+                player.careerPoints += statline.pointsScored;
+            }
+        }
+
+        return new ArrayList<>(players.values());
+    }
+
+    List<Player> getRelevantPlayers() {
+        List<Player> players = getPlayers();
+
+        // at least 6 points per game
+        players.removeIf(p -> p.pointsPerGame() < 6);
+
+        // played for multiple years
+        players.removeIf(p -> (p.earliestYearPlayed == p.latestYearPlayed && p.latestYearPlayed < 2017));
+
+        return players;
     }
 
     private BufferedReader getReader() throws FileNotFoundException {
