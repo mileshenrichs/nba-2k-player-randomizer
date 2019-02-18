@@ -4,6 +4,9 @@ import java.util.*;
 
 public class PlayerRepository {
     private Map<String, Position> positionCodeMap;
+    private String modernTeamNamesStr = "ATL BKN BOS CHA CHI CLE DAL DEN DET GSW HOU IND LAC LAL MEM MIA MIL MIN NOH NOP " +
+            "NYK OKC ORL PHI PHX POR SAC SAS TOR UTA WAS";
+    private Set<String> modernTeamNames = new HashSet<>(Arrays.asList(modernTeamNamesStr.split(" ")));
 
     PlayerRepository() {
         this.positionCodeMap = buildPositionCodeMap();
@@ -134,7 +137,8 @@ public class PlayerRepository {
     private boolean seasonStatIsGood(SeasonStatline statline) {
         return statline.year != null && statline.playerName != null
                 && statline.pointsScored != null && statline.teamCode != null
-                && statline.position != null && statline.gamesPlayed != null;
+                && statline.position != null && statline.gamesPlayed != null
+                && modernTeamNames.contains(statline.teamCode);
     }
 
     private Integer intOrNull(String data) {

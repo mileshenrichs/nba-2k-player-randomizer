@@ -22,10 +22,6 @@ const AdditionalSettings = props => {
                 <span>Minimum player career PPG: </span>
                 <NumberInput placeholder="25.8" value={props.minimumPlayerPPG} onChange={props.onChangeMinPlayerPPG} />
             </Setting>
-
-            <Setting isActive={props.preventDuplicatedPositions} onToggle={props.onTogglePreventDuplicatedPositions}>
-                <span>Prevent duplicated positions</span>
-            </Setting>
         </div>
     );
 };

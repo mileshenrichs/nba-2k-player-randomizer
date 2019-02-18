@@ -73,6 +73,10 @@ button.active,
     border-color: #6a3900;
 }
 
+button::-moz-focus-inner {
+    border: 0;
+}
+
 .RandomizationModeButtons__row-1 {
     margin-bottom: 14px;
 }
@@ -148,4 +152,41 @@ button.active,
     border-color: #818181;
     text-shadow: none;
     opacity: 0.9;
+}
+
+.teams-container {
+    width: 840px;
+    overflow: hidden;
+    height: 500px;
+}
+
+.TeamRoster {
+    float: left;
+    width: 50%;
+}
+
+.TeamRoster h3 {
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.Player {
+    margin: 0 0 26px 70px;
+    padding-left: 18px;
+    border-left: 3px solid rgba(0, 0, 0, 0.6);
+}
+
+.Player__name {
+    display: block;
+    color: #000000;
+    font-size: 1.5em;
+}
+
+.Player__details {
+    font-size: 0.8em;
+    color: #727272;
+    position: relative;
+    bottom: 3px;
 }
