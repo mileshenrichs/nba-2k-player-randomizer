@@ -282,6 +282,10 @@ button::-moz-focus-inner {
         margin-bottom: 50px;
     }
 
+    .teams-container {
+        height: 950px;
+    }
+
     .Player {
         margin-left: 40px;
     }
