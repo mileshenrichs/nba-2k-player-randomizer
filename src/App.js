@@ -111,43 +111,41 @@ class App extends Component {
         });
 
         // wait a few seconds, then incrementally reveal players on each team
-        setTimeout(() => {
-            let i = 0;
-            const revealInterval = setInterval(() => {
-                if(i < this.state.team1.length) {
-                    this.setState(prevState => ({
-                        team1: [
-                            ...prevState.team1.slice(0, i),
-                            {
-                                ...prevState.team1[i],
-                                reveal: true
-                            },
-                            ...prevState.team1.slice(i + 1)
-                        ]
-                    }));
-                } else if(i < this.state.team2.length * 2) {
-                    this.setState(prevState => ({
-                        team2: [
-                            ...prevState.team2.slice(0, i % this.state.team2.length),
-                            {
-                                ...prevState.team2[i % this.state.team2.length],
-                                reveal: true
-                            },
-                            ...prevState.team2.slice(i % this.state.team2.length + 1)
-                        ]
-                    }));
-                }
+        let i = 0;
+        const revealInterval = setInterval(() => {
+            if(i < this.state.team1.length) {
+                this.setState(prevState => ({
+                    team1: [
+                        ...prevState.team1.slice(0, i),
+                        {
+                            ...prevState.team1[i],
+                            reveal: true
+                        },
+                        ...prevState.team1.slice(i + 1)
+                    ]
+                }));
+            } else if(i < this.state.team2.length * 2) {
+                this.setState(prevState => ({
+                    team2: [
+                        ...prevState.team2.slice(0, i % this.state.team2.length),
+                        {
+                            ...prevState.team2[i % this.state.team2.length],
+                            reveal: true
+                        },
+                        ...prevState.team2.slice(i % this.state.team2.length + 1)
+                    ]
+                }));
+            }
 
-                i++;
+            i++;
 
-                if(i >= this.state.team1.length * 2) {
-                    setTimeout(() => {
-                        this.setState({canRandomize: true});
-                    }, 1500);
-                    clearInterval(revealInterval);
-                }
-            }, 2000);
-        }, 1000);
+            if(i >= this.state.team1.length * 2) {
+                setTimeout(() => {
+                    this.setState({canRandomize: true});
+                }, 1500);
+                clearInterval(revealInterval);
+            }
+        }, 2000);
     }
 
     initAnimationInfoToPlayerStates() {
