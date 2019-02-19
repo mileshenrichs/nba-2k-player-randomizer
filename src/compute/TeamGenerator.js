@@ -4,7 +4,6 @@ export default class TeamGenerator {
 
     constructor(settings) {
         this.settings = settings;
-        console.log(this.settings);
     }
 
     /**

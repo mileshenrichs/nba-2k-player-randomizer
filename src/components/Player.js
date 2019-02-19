@@ -78,8 +78,6 @@ const getAbbreviatedPosition = position => positionLookupTable[position];
 
 const getFullTeamName = team => teamNameLookupTable[team];
 
-const pickRandomTeamForPlayer = player => player.teams[Math.floor(Math.random() * player.teams.length)];
-
 const getBorderColor = player => positionalBorderColorsLookupTable[player.position];
 
 export default Player;

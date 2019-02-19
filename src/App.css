@@ -143,8 +143,14 @@ button::-moz-focus-inner {
 }
 
 .randomize-button {
-    padding: 20px 80px;
+    width: 260px;
+    height: 60px;
     font-size: 1.5em;
+}
+
+.randomize-button img {
+    height: 100%;
+    opacity: 0.8;
 }
 
 .randomize-button:disabled {

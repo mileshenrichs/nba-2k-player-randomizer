@@ -61,9 +61,7 @@ public class PlayerRepository {
                 player = players.get(player.name);
 
                 player.position = statline.position;
-                if(!player.teams.contains(statline.teamCode)) {
-                    player.teams.add(statline.teamCode);
-                }
+                player.teams.add(statline.teamCode);
                 player.earliestYearPlayed = Math.min(player.earliestYearPlayed, statline.year);
                 player.latestYearPlayed = Math.max(player.latestYearPlayed, statline.year);
                 player.careerGames += statline.gamesPlayed;

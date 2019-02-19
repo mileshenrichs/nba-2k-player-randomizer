@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import loaderSrc from './assets/loader.gif';
 import Step from "./components/Step";
 import TeamSizeButtons from "./components/TeamSizeButtons";
 import RandomizationModeButtons from "./components/RandomizationModeButtons";
@@ -87,6 +88,13 @@ class App extends Component {
     initTeamReveal() {
         this.initAnimationInfoToPlayerStates();
 
+        const topScrollPixel = this.randomizeButton.getBoundingClientRect().top - 40;
+        window.scrollBy({
+            left: 0,
+            top: topScrollPixel,
+            behavior: 'smooth'
+        });
+
         // wait a few seconds, then incrementally reveal players on each team
         setTimeout(() => {
             let i = 0;
@@ -118,6 +126,9 @@ class App extends Component {
                 i++;
 
                 if(i >= this.state.team1.length * 2) {
+                    setTimeout(() => {
+                        this.setState({canRandomize: true});
+                    }, 1500);
                     clearInterval(revealInterval);
                 }
             }, 2000);
@@ -186,9 +197,11 @@ class App extends Component {
 
                     <Step renderPoint={2} currentPointIndex={this.state.currentPointIndex}
                           style={{display: 'flex', justifyContent: 'center'}}>
-                        <button className="randomize-button active"
+                        <button className="randomize-button active" ref={node => this.randomizeButton = node}
                             disabled={!this.state.canRandomize} onClick={() => this.generateRosters()}>
-                            Randomize
+                            {this.state.canRandomize && 'Randomize'}
+                            {!this.state.canRandomize &&
+                                <img src={loaderSrc} alt="Randomizing..." />}
                         </button>
                     </Step>
 
