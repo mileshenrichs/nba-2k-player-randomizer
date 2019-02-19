@@ -204,3 +204,20 @@ button::-moz-focus-inner {
     position: relative;
     bottom: 3px;
 }
+
+.error {
+    display: flex;
+    align-items: center;
+    width: 620px;
+    margin: 0 auto 30px auto;
+    padding: 16px 24px;
+    font-size: 0.9em;
+    background: #f7c4c4;
+    border-radius: 3px;
+    color: #320909;
+}
+
+.error img {
+    width: 22px;
+    margin-right: 22px;
+}

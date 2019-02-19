@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import loaderSrc from './assets/loader.gif';
+import errorIconSrc from './assets/error.png';
 import Step from "./components/Step";
 import TeamSizeButtons from "./components/TeamSizeButtons";
 import RandomizationModeButtons from "./components/RandomizationModeButtons";
@@ -77,10 +78,24 @@ class App extends Component {
             this.setState({team1, team2}, () => {
                 this.initTeamReveal();
             });
-        } catch(errorMessage) {
-            // todo: build error notifier
-            this.setState({error: errorMessage});
-            console.log(errorMessage);
+        } catch(err) {
+            this.setState({
+                error: err.message,
+                canRandomize: true
+            });
+
+            // scroll down to make error more visible
+            setTimeout(() => {
+                const additionalSettings = document.querySelector('.AdditionalSettings');
+                console.log(additionalSettings);
+                const topScrollPixel = additionalSettings.getBoundingClientRect().top - 100;
+                console.log(topScrollPixel);
+                window.scrollBy({
+                    left: 0,
+                    top: topScrollPixel,
+                    behavior: 'smooth'
+                });
+            }, 100);
         }
 
     }
@@ -194,6 +209,13 @@ class App extends Component {
                             onChangeMinPlayerPPG={minPPG => this.setState({minimumPlayerPPG: minPPG})}
                         />
                     </Step>
+
+                    {this.state.error &&
+                        <div className="error">
+                            <img src={errorIconSrc} alt="" />
+                            <span>{this.state.error}</span>
+                        </div>
+                    }
 
                     <Step renderPoint={2} currentPointIndex={this.state.currentPointIndex}
                           style={{display: 'flex', justifyContent: 'center'}}>
