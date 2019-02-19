@@ -234,6 +234,10 @@ class App extends Component {
                         </div>
                     </Step>
                 </div>
+
+                <div className="footer">
+                    Created by <a href="https://github.com/mileshenrichs">Miles Henrichs</a>
+                </div>
             </div>
         );
     }

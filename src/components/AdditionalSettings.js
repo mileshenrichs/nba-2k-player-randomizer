@@ -11,7 +11,7 @@ const AdditionalSettings = props => {
 
             <Setting isActive={props.yearWindow.filterActive} onToggle={props.onToggleYearWindowActive}>
                 <span>
-                    Only players from years
+                    Players from years
                     <NumberInput placeholder="any" value={props.yearWindow.fromYear} onChange={props.onChangeFromYear} />
                     &nbsp;to&nbsp;
                     <NumberInput placeholder="any" value={props.yearWindow.toYear} onChange={props.onChangeToYear} />
