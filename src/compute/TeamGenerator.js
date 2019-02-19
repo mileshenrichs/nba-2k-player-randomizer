@@ -115,23 +115,23 @@ export default class TeamGenerator {
 const validateSettings = settings => {
     // validate year range
     if(settings.yearWindow.filterActive) {
-        if(isNaN(settings.yearWindow.fromYear) || settings.yearWindow.fromYear < 0)
+        if(settings.yearWindow.fromYear && (isNaN(settings.yearWindow.fromYear) || settings.yearWindow.fromYear < 0))
             throw new Error('Your minimum year cutoff for players is not a valid year.');
-        if(isNaN(settings.yearWindow.toYear) || settings.yearWindow.toYear < 0)
+        if(settings.yearWindow.toYear && (isNaN(settings.yearWindow.toYear) || settings.yearWindow.toYear < 0))
             throw new Error('Your maximum year cutoff for players is not a valid year.');
 
-        if(settings.yearWindow.fromYear >= 2019)
+        if(settings.yearWindow.fromYear && settings.yearWindow.fromYear >= 2019)
             throw new Error('Your minimum year cutoff for players must be 2018 or earlier.');
-        if(settings.yearWindow.toYear <= 1949)
+        if(settings.yearWindow.toYear && settings.yearWindow.toYear <= 1949)
             throw new Error('Your maximum year cutoff for players must be 1950 or later.');
 
-        if(settings.currentPlayersOnly && settings.yearWindow.toYear < 2017)
+        if(settings.currentPlayersOnly && settings.yearWindow.toYear && settings.yearWindow.toYear < 2017)
             throw new Error('You want current players only, but your maximum cutoff year is ' + settings.yearWindow.toYear + '.');
     }
 
     // validate minimum career player PPG
     if(settings.minimumPlayerPPGActive) {
-        if(isNaN(settings.minimumPlayerPPG) || settings.minimumPlayerPPG < 0)
+        if(settings.minimumPlayerPPG && (isNaN(settings.minimumPlayerPPG) || settings.minimumPlayerPPG < 0))
             throw new Error('Minimum player PPG is an invalid number.');
     }
 };
