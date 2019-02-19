@@ -14,7 +14,7 @@ class App extends Component {
             currentPointIndex: 0,
             teamSize: undefined,
             randomizationMode: undefined,
-            currentPlayersOnly: false,
+            currentPlayersOnly: true,
             yearWindow: {
                 filterActive: false,
                 fromYear: '',
@@ -85,13 +85,43 @@ class App extends Component {
     }
 
     initTeamReveal() {
-        console.log('initTeamReveal()');
         this.initAnimationInfoToPlayerStates();
 
         // wait a few seconds, then incrementally reveal players on each team
         setTimeout(() => {
-            setTimeout(() => console.log('test'), 200);
-        }, 2000);
+            let i = 0;
+            const revealInterval = setInterval(() => {
+                if(i < this.state.team1.length) {
+                    this.setState(prevState => ({
+                        team1: [
+                            ...prevState.team1.slice(0, i),
+                            {
+                                ...prevState.team1[i],
+                                reveal: true
+                            },
+                            ...prevState.team1.slice(i + 1)
+                        ]
+                    }));
+                } else if(i < this.state.team2.length * 2) {
+                    this.setState(prevState => ({
+                        team2: [
+                            ...prevState.team2.slice(0, i % this.state.team2.length),
+                            {
+                                ...prevState.team2[i % this.state.team2.length],
+                                reveal: true
+                            },
+                            ...prevState.team2.slice(i % this.state.team2.length + 1)
+                        ]
+                    }));
+                }
+
+                i++;
+
+                if(i >= this.state.team1.length * 2) {
+                    clearInterval(revealInterval);
+                }
+            }, 2000);
+        }, 1000);
     }
 
     initAnimationInfoToPlayerStates() {

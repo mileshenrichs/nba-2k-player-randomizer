@@ -16,6 +16,7 @@ export default class TeamGenerator {
 
         // 1. filter players to form draft pool
         const playerPool = this.getPlayerPool();
+        console.log(playerPool.length + ' players in pool');
 
         // 2. validate pool size
         if(playerPool.length <= numPlayers) {
@@ -34,11 +35,15 @@ export default class TeamGenerator {
                 // add player index to selected indices list (prevent duplicate players)
                 selectedPlayerIndices.push(selectionIndex);
 
+                // randomly select NBA team from player's past teams
+                const player = playerPool[selectionIndex];
+                player.teamIndex = Math.floor(Math.random() * player.teams.length);
+
                 // add player to roster with fewest players (naturally causes an alternating draft)
                 if(team1.length <= team2.length) {
-                    team1.push(playerPool[selectionIndex]);
+                    team1.push(player);
                 } else {
-                    team2.push(playerPool[selectionIndex]);
+                    team2.push(player);
                 }
             }
         }
@@ -69,7 +74,8 @@ export default class TeamGenerator {
             return players.filter(p => p.position === 'SMALL_FORWARD' || p.position === 'POWER_FORWARD');
 
         if(this.settings.randomizationMode === 'top') {
-            players.sort((p1, p2) => p1.careerPPG - p2.careerPPG);
+            players.sort((p1, p2) => p2.careerPPG - p1.careerPPG);
+            players = players.filter(p => p.latestYearPlayed - p.earliestYearPlayed >= 5);
             return players.slice(0, 50);
         }
 

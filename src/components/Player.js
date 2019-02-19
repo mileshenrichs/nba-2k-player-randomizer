@@ -1,20 +1,26 @@
 import React from 'react';
 
 const Player = ({ player }) => {
-    return (
-        <div className="Player" style={{borderColor: getBorderColor(player)}}>
-            <span className="Player__name">{player.name}</span>
-            <span className="Player__details">
-                <span className="Player__details--position">
-                    {getAbbreviatedPosition(player.position)}
+    if(player.reveal) {
+        return (
+            <div className="Player" style={{borderColor: getBorderColor(player)}}>
+                <div className="Player__content">
+                    <span className="Player__name">{player.name}</span>
+                    <span className="Player__details">
+                    <span className="Player__details--position">
+                        {getAbbreviatedPosition(player.position)}
+                    </span>
+                    <span className="Player__details--divider"> | </span>
+                    <span className="Player__details--team">
+                        {getFullTeamName(player.teams[player.teamIndex])}
+                    </span>
                 </span>
-                <span className="Player__details--divider"> | </span>
-                <span className="Player__details--team">
-                    {getFullTeamName(pickRandomTeamForPlayer(player))}
-                </span>
-            </span>
-        </div>
-    );
+                </div>
+            </div>
+        );
+    } else {
+        return null;
+    }
 };
 
 const positionLookupTable = {

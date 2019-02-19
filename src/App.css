@@ -13,7 +13,8 @@ body {
 }
 
 .container {
-    width: 960px;
+    width: 96%;
+    max-width: 960px;
     margin: 0 auto;
     padding-top: 20px;
 }
@@ -173,9 +174,16 @@ button::-moz-focus-inner {
 }
 
 .Player {
-    margin: 0 0 26px 70px;
+    margin: 0 0 26px 100px;
     padding-left: 18px;
     border-left: 3px solid rgba(0, 0, 0, 0.6);
+    animation: fade-in-step 1s ease-in-out forwards;
+}
+
+.Player__content {
+    opacity: 0;
+    animation: fade-in-step 1s ease-in-out forwards;
+    animation-delay: .6s;
 }
 
 .Player__name {
