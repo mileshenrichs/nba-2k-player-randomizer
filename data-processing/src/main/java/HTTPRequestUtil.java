@@ -10,6 +10,11 @@ public class HTTPRequestUtil {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            int responseCode = con.getResponseCode();
+            if(responseCode != 200) {
+                System.out.println("Non-200 response code for url " + url);
+                System.out.println("Response code was " + responseCode);
+            }
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;

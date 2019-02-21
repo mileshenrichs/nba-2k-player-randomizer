@@ -25,3 +25,6 @@ yarn-error.log*
 .idea
 data-processing/target
 *.iml
+
+data-processing/src/main/resources/player-versions.csv
+data-processing/src/main/resources/player-versions-clean.csv
