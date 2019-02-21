@@ -22,6 +22,11 @@ const AdditionalSettings = props => {
                 <span>Minimum player career PPG: </span>
                 <NumberInput placeholder="25.8" value={props.minimumPlayerPPG} onChange={props.onChangeMinPlayerPPG} />
             </Setting>
+
+            <Setting isActive={props.minimumPlayerRatingActive} onToggle={props.onToggleMinPlayerRating}>
+                <span>Minimum player rating: </span>
+                <NumberInput placeholder="80" value={props.minimumPlayerRating} onChange={props.onChangeMinPlayerRating} />
+            </Setting>
         </div>
     );
 };

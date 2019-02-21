@@ -24,6 +24,8 @@ class App extends Component {
             },
             minimumPlayerPPGActive: false,
             minimumPlayerPPG: '',
+            minimumPlayerRatingActive: false,
+            minimumPlayerRating: '',
             canRandomize: true,
             team1: [],
             team2: [],
@@ -62,7 +64,8 @@ class App extends Component {
         this.setState({
             canRandomize: false,
             team1: [],
-            team2: []
+            team2: [],
+            error: undefined
         });
         this.advancePoint(2);
 
@@ -87,9 +90,7 @@ class App extends Component {
             // scroll down to make error more visible
             setTimeout(() => {
                 const additionalSettings = document.querySelector('.AdditionalSettings');
-                console.log(additionalSettings);
                 const topScrollPixel = additionalSettings.getBoundingClientRect().top - 100;
-                console.log(topScrollPixel);
                 window.scrollBy({
                     left: 0,
                     top: topScrollPixel,
@@ -188,6 +189,8 @@ class App extends Component {
                             yearWindow={this.state.yearWindow}
                             minimumPlayerPPGActive={this.state.minimumPlayerPPGActive}
                             minimumPlayerPPG={this.state.minimumPlayerPPG}
+                            minimumPlayerRatingActive={this.state.minimumPlayerRatingActive}
+                            minimumPlayerRating={this.state.minimumPlayerRating}
                             onToggleCurrentPlayersOnly={() => this.setState(prevState => ({
                                 currentPlayersOnly: !prevState.currentPlayersOnly
                             }))}
@@ -205,6 +208,10 @@ class App extends Component {
                                 minimumPlayerPPGActive: !prevState.minimumPlayerPPGActive
                             }))}
                             onChangeMinPlayerPPG={minPPG => this.setState({minimumPlayerPPG: minPPG})}
+                            onToggleMinPlayerRating={() => this.setState(prevState => ({
+                                minimumPlayerRatingActive: !prevState.minimumPlayerRatingActive
+                            }))}
+                            onChangeMinPlayerRating={minRating => this.setState({minimumPlayerRating: minRating})}
                         />
                     </Step>
 

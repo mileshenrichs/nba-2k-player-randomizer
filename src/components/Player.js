@@ -75,10 +75,15 @@ const getRatingBoxStyle = rating => {
             background: '#648C9A',
             boxShadow: '0 0 10px #00bdff'
         }
-    } else {
+    } else if(rating <= 98) {
         return {
             background: '#B52D72',
             boxShadow: '0 0 10px #ff0081'
+        }
+    } else {
+        return {
+            background: 'linear-gradient(rgba(75,168,255,0.1), rgba(0,0,0,0.7)), linear-gradient(to bottom left, #188fff, #e1a6e7, #f9a205)',
+            boxShadow: '0 0 10px #f9a205'
         }
     }
 };

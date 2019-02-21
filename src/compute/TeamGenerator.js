@@ -36,10 +36,18 @@ export default class TeamGenerator {
                 // add player index to selected indices list (prevent duplicate players)
                 selectedPlayerIndices.push(selectionIndex);
 
-                // select player version.. if current only set, choose current version
+                // select player version
                 const player = playerPool[selectionIndex];
                 if(this.settings.currentPlayersOnly && player.versions.find(v => v.isCurrent)) {
                     player.versionIndex = player.versions.map(v => v.isCurrent).indexOf(true);
+                } else if(this.settings.minimumPlayerRatingActive && this.settings.minimumPlayerRating) {
+                    let possibleVersionIndices = [];
+                    for(let i = 0; i < player.versions.length; i++) {
+                        if(player.versions[i].rating >= this.settings.minimumPlayerRating) {
+                            possibleVersionIndices.push(i);
+                        }
+                    }
+                    player.versionIndex = possibleVersionIndices[Math.floor(Math.random() * possibleVersionIndices.length)];
                 } else {
                     player.versionIndex = Math.floor(Math.random() * player.versions.length);
                 }
@@ -64,6 +72,7 @@ export default class TeamGenerator {
         players = this.filterCurrentPlayersOnly(players);
         players = this.filterYearWindow(players);
         players = this.filterMinimumPPG(players);
+        players = this.filterMinimumRating(players);
 
         return players;
     }
@@ -118,6 +127,27 @@ export default class TeamGenerator {
         return players;
     }
 
+    filterMinimumRating(players) {
+        if(this.settings.minimumPlayerRatingActive && this.settings.minimumPlayerRating) {
+            let sufficientlyRatedPlayers = players.filter(p => {
+                return p.versions.find(v => v.rating >= this.settings.minimumPlayerRating)
+            });
+            console.log(sufficientlyRatedPlayers);
+
+            // if current players only, make sure that the players' current versions are rated sufficiently high
+            if(this.settings.currentPlayersOnly) {
+                sufficientlyRatedPlayers = sufficientlyRatedPlayers.filter(p => {
+                    const currentVersion = p.versions.find(v => v.isCurrent);
+                    return currentVersion && currentVersion.rating >= this.settings.minimumPlayerRating;
+                });
+            }
+
+            return sufficientlyRatedPlayers;
+        }
+
+        return players;
+    }
+
 }
 
 const validateSettings = settings => {
@@ -141,5 +171,11 @@ const validateSettings = settings => {
     if(settings.minimumPlayerPPGActive) {
         if(settings.minimumPlayerPPG && (isNaN(settings.minimumPlayerPPG) || settings.minimumPlayerPPG < 0))
             throw new Error('Minimum player PPG is an invalid number.');
+    }
+
+    // validate minimum player rating
+    if(settings.minimumPlayerRatingActive) {
+        if(settings.minimumPlayerRating && isNaN(settings.minimumPlayerRating))
+            throw new Error('Minimum player rating is an invalid number.');
     }
 };
