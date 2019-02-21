@@ -20,11 +20,6 @@ public class JSONWriter {
             JSONObject playerObj = new JSONObject();
             playerObj.put("name", player.name);
             playerObj.put("position", player.position);
-            JSONArray teamsArr = new JSONArray();
-            for(String team : player.teams) {
-                teamsArr.put(team);
-            }
-            playerObj.put("teams", teamsArr);
             playerObj.put("earliestYearPlayed", player.earliestYearPlayed);
             playerObj.put("latestYearPlayed", player.latestYearPlayed);
             playerObj.put("careerPPG", player.pointsPerGame());

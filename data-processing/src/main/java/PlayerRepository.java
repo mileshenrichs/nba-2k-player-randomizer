@@ -49,8 +49,6 @@ public class PlayerRepository {
         for(SeasonStatline statline : getSeasonStatlines()) {
             Player player = new Player(statline.playerName, statline.position);
             if(!players.containsKey(player.name)) {
-                player.teams = new ArrayList<>();
-                player.teams.add(statline.teamCode);
                 player.earliestYearPlayed = statline.year;
                 player.latestYearPlayed = statline.year;
                 player.careerGames = statline.gamesPlayed;
@@ -61,7 +59,6 @@ public class PlayerRepository {
                 player = players.get(player.name);
 
                 player.position = statline.position;
-                player.teams.add(statline.teamCode);
                 player.earliestYearPlayed = Math.min(player.earliestYearPlayed, statline.year);
                 player.latestYearPlayed = Math.max(player.latestYearPlayed, statline.year);
                 player.careerGames += statline.gamesPlayed;

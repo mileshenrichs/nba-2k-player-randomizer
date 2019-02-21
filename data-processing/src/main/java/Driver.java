@@ -12,6 +12,11 @@ public class Driver {
             System.out.println(pickPlayer(players));
         }
 
+        for(Player player : players) {
+            if(player.name.equals("Jason Kidd"))
+                System.out.println(player);
+        }
+
         try {
             // write all players to JSON file for frontend application
             JSONWriter.writeAllPlayersToJSONFile("players.json", players);
