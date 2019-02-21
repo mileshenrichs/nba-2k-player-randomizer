@@ -36,9 +36,13 @@ export default class TeamGenerator {
                 // add player index to selected indices list (prevent duplicate players)
                 selectedPlayerIndices.push(selectionIndex);
 
-                // randomly select NBA team from player's past teams
+                // select player version.. if current only set, choose current version
                 const player = playerPool[selectionIndex];
-                player.teamIndex = Math.floor(Math.random() * player.teams.length);
+                if(this.settings.currentPlayersOnly && player.versions.find(v => v.isCurrent)) {
+                    player.versionIndex = player.versions.map(v => v.isCurrent).indexOf(true);
+                } else {
+                    player.versionIndex = Math.floor(Math.random() * player.versions.length);
+                }
 
                 // add player to roster with fewest players (naturally causes an alternating draft)
                 if(team1.length <= team2.length) {
@@ -84,7 +88,11 @@ export default class TeamGenerator {
     }
 
     filterCurrentPlayersOnly(players) {
-        return this.settings.currentPlayersOnly ? players.filter(p => p.latestYearPlayed >= 2017) : players;
+        if(this.settings.currentPlayersOnly) {
+            return players.filter(p => p.versions.find(v => v.isCurrent));
+        }
+
+        return players;
     }
 
     filterYearWindow(players) {

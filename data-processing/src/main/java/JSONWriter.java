@@ -23,6 +23,17 @@ public class JSONWriter {
             playerObj.put("earliestYearPlayed", player.earliestYearPlayed);
             playerObj.put("latestYearPlayed", player.latestYearPlayed);
             playerObj.put("careerPPG", player.pointsPerGame());
+            JSONArray versions = new JSONArray();
+            for(PlayerVersion version : player.versions) {
+                JSONObject versionObj = new JSONObject();
+                versionObj.put("team", version.team);
+                versionObj.put("rating", version.rating);
+                if(version.isCurrent) {
+                    versionObj.put("isCurrent", true);
+                }
+                versions.put(versionObj);
+            }
+            playerObj.put("versions", versions);
 
             playersArr.put(playerObj);
         }

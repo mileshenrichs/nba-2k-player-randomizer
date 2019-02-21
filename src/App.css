@@ -180,7 +180,7 @@ button::-moz-focus-inner {
 }
 
 .Player {
-    margin: 0 0 26px 100px;
+    margin: 0 0 26px 90px;
     padding-left: 18px;
     border-left: 3px solid rgba(0, 0, 0, 0.6);
     animation: fade-in-step 1s ease-in-out forwards;
@@ -190,6 +190,12 @@ button::-moz-focus-inner {
     opacity: 0;
     animation: fade-in-step 1s ease-in-out forwards;
     animation-delay: .6s;
+    overflow: hidden;
+    padding-right: 25px;
+}
+
+.Player__text {
+    float: left;
 }
 
 .Player__name {
@@ -203,6 +209,17 @@ button::-moz-focus-inner {
     color: #727272;
     position: relative;
     bottom: 3px;
+}
+
+.Player__rating {
+    padding: 6px 8px;
+    background: red;
+    color: #ffffff;
+    border-radius: 4px;
+    float: right;
+    font-weight: 600;
+    position: relative;
+    top: 9px;
 }
 
 .error {

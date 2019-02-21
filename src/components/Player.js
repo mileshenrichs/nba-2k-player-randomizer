@@ -1,20 +1,26 @@
 import React from 'react';
 
 const Player = ({ player }) => {
+    const rating = player.versions[player.versionIndex].rating;
+
     if(player.reveal) {
         return (
             <div className="Player" style={{borderColor: getBorderColor(player)}}>
                 <div className="Player__content">
-                    <span className="Player__name">{player.name}</span>
-                    <span className="Player__details">
-                    <span className="Player__details--position">
-                        {getAbbreviatedPosition(player.position)}
-                    </span>
-                    <span className="Player__details--divider"> | </span>
-                    <span className="Player__details--team">
-                        {getFullTeamName(player.teams[player.teamIndex])}
-                    </span>
-                </span>
+                    <div className="Player__text">
+                        <span className="Player__name">{player.name}</span>
+                        <span className="Player__details">
+                            <span className="Player__details--position">
+                                {getAbbreviatedPosition(player.position)}
+                            </span>
+                            <span className="Player__details--divider"> | </span>
+                            <span className="Player__details--team">
+                                {player.versions[player.versionIndex].team}
+                            </span>
+                        </span>
+                    </div>
+
+                    <span className="Player__rating" style={getRatingBoxStyle(rating)}>{rating}</span>
                 </div>
             </div>
         );
@@ -31,41 +37,6 @@ const positionLookupTable = {
     'CENTER': 'C'
 };
 
-const teamNameLookupTable = {
-    'ATL': 'Atlanta Hawks',
-    'BKN': 'Brooklyn Nets',
-    'BOS': 'Boston Celtics',
-    'CHA': 'Charlotte Hornets',
-    'CHI': 'Chicago Bulls',
-    'CLE': 'Cleveland Cavaliers',
-    'DAL': 'Dallas Mavericks',
-    'DEN': 'Denver Nuggets',
-    'DET': 'Detroit Pistons',
-    'GSW': 'Golden State Warriors',
-    'HOU': 'Houston Rockets',
-    'IND': 'Indiana Pacers',
-    'LAC': 'Los Angeles Clippers',
-    'LAL': 'Los Angeles Lakers',
-    'MEM': 'Memphis Grizzlies',
-    'MIA': 'Miami Heat',
-    'MIL': 'Milwaukee Bucks',
-    'MIN': 'Minnesota Timberwolves',
-    'NOP': 'New Orleans Pelicans',
-    'NOH': 'New Orleans Hornets',
-    'NYK': 'New York Knicks',
-    'OKC': 'Oklahoma City Thunder',
-    'ORL': 'Orlando Magic',
-    'PHI': 'Philadelphia 67ers',
-    'PHX': 'Phoenix Suns',
-    'POR': 'Portland Trail Blazers',
-    'SAC': 'Sacramento Kings',
-    'SAS': 'San Antonio Spurs',
-    'TOR': 'Toronto Raptors',
-    'UTA': 'Utah Jazz',
-    'WAS': 'Washington Wizards',
-
-};
-
 const positionalBorderColorsLookupTable = {
     'SMALL_FORWARD': '#008000',
     'CENTER': '#935614',
@@ -76,8 +47,40 @@ const positionalBorderColorsLookupTable = {
 
 const getAbbreviatedPosition = position => positionLookupTable[position];
 
-const getFullTeamName = team => teamNameLookupTable[team];
-
 const getBorderColor = player => positionalBorderColorsLookupTable[player.position];
+
+const getRatingBoxStyle = rating => {
+    if(rating <= 70) {
+        return {
+            background: '#6F270E'
+        }
+    } else if(rating <= 75) {
+        return {
+            background: '#7F8180'
+        }
+    } else if(rating <= 80) {
+        return {
+            background: '#AB8824'
+        }
+    } else if(rating <= 85) {
+        return {
+            background: '#1D7722'
+        }
+    } else if(rating <= 90) {
+        return {
+            background: '#A30000'
+        }
+    } else if(rating <= 95) {
+        return {
+            background: '#648C9A',
+            boxShadow: '0 0 10px #00bdff'
+        }
+    } else {
+        return {
+            background: '#B52D72',
+            boxShadow: '0 0 10px #ff0081'
+        }
+    }
+};
 
 export default Player;

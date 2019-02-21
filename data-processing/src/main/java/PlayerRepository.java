@@ -1,5 +1,10 @@
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class PlayerRepository {
@@ -18,8 +23,7 @@ public class PlayerRepository {
 
             BufferedReader br = getReader();
             br.readLine(); // skip first line (column titles)
-            String line = "";
-            int i = 0;
+            String line;
             while((line = br.readLine()) != null) {
                 String[] seasonStat = line.split(",");
 
@@ -29,8 +33,6 @@ public class PlayerRepository {
                         statlines.add(buildStatline(seasonStat));
                     }
                 }
-
-                i++;
             }
 
             return statlines;
@@ -45,35 +47,69 @@ public class PlayerRepository {
 
     List<Player> getPlayers() {
         Map<String, Player> players = new HashMap<>();
+        Map<String, List<PlayerVersion>> playerVersions = getPlayerVersionsMap();
 
         for(SeasonStatline statline : getSeasonStatlines()) {
             Player player = new Player(statline.playerName, statline.position);
-            if(!players.containsKey(player.name)) {
-                player.earliestYearPlayed = statline.year;
-                player.latestYearPlayed = statline.year;
-                player.careerGames = statline.gamesPlayed;
-                player.careerPoints = statline.pointsScored;
+            if(playerVersions.containsKey(player.name)) {
+                if(!players.containsKey(player.name)) {
+                    player.earliestYearPlayed = statline.year;
+                    player.latestYearPlayed = statline.year;
+                    player.careerGames = statline.gamesPlayed;
+                    player.careerPoints = statline.pointsScored;
+                    player.versions = playerVersions.get(player.name);
 
-                players.put(player.name, player);
-            } else {
-                player = players.get(player.name);
+                    players.put(player.name, player);
+                } else {
+                    player = players.get(player.name);
 
-                player.position = statline.position;
-                player.earliestYearPlayed = Math.min(player.earliestYearPlayed, statline.year);
-                player.latestYearPlayed = Math.max(player.latestYearPlayed, statline.year);
-                player.careerGames += statline.gamesPlayed;
-                player.careerPoints += statline.pointsScored;
+                    player.position = statline.position;
+                    player.earliestYearPlayed = Math.min(player.earliestYearPlayed, statline.year);
+                    player.latestYearPlayed = Math.max(player.latestYearPlayed, statline.year);
+                    player.careerGames += statline.gamesPlayed;
+                    player.careerPoints += statline.pointsScored;
+                }
             }
         }
 
         return new ArrayList<>(players.values());
     }
 
+    private static Map<String, List<PlayerVersion>> getPlayerVersionsMap() {
+        Map<String, List<PlayerVersion>> playerVersions = new HashMap<>();
+
+        try {
+            Path currentPath = Paths.get(System.getProperty("user.dir"));
+            Path inFilePath = Paths.get(currentPath.toString(), "src", "main", "resources", "player-versions-clean.csv");
+            File csvFile = new File(inFilePath.toUri());
+            CSVReader csvReader = new CSVReaderBuilder(new FileReader(csvFile)).withSkipLines(1).build();
+            List<String[]> records = csvReader.readAll();
+
+            for(String[] record : records) {
+                String playerName = record[0];
+                PlayerVersion version = new PlayerVersion(record[1], Integer.parseInt(record[2]));
+                if(Boolean.parseBoolean(record[3]))
+                    version.isCurrent = true;
+
+                List<PlayerVersion> mapVersions = playerVersions.getOrDefault(playerName, new ArrayList<>());
+                if(!mapVersions.contains(version)) {
+                    mapVersions.add(version);
+                    playerVersions.put(playerName, mapVersions);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("player versions size: " + playerVersions.size());
+        return playerVersions;
+    }
+
     List<Player> getRelevantPlayers() {
         List<Player> players = getPlayers();
 
         // at least 6 points per game
-        players.removeIf(p -> p.pointsPerGame() < 6);
+        players.removeIf(p -> p.pointsPerGame() < 4);
 
         // played for multiple years
         players.removeIf(p -> (p.earliestYearPlayed == p.latestYearPlayed && p.latestYearPlayed < 2017));
