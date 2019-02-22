@@ -29,7 +29,8 @@ class App extends Component {
             canRandomize: true,
             team1: [],
             team2: [],
-            error: undefined
+            error: undefined,
+            fattyMode: false
         };
     }
 
@@ -77,8 +78,16 @@ class App extends Component {
 
         try {
             const generator = new TeamGenerator(settings);
-            // const { team1, team2 } = generator.generateTeams();
-            const { team1, team2 } = generator.generateFatties();
+            let team1, team2;
+            if(this.state.fattyMode) {
+                const teams = generator.generateFatties();
+                team1 = teams.team1;
+                team2 = teams.team2;
+            } else {
+                const teams = generator.generateTeams();
+                team1 = teams.team1;
+                team2 = teams.team2;
+            }
             this.setState({team1, team2}, () => {
                 this.initTeamReveal();
             });
