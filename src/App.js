@@ -77,7 +77,8 @@ class App extends Component {
 
         try {
             const generator = new TeamGenerator(settings);
-            const { team1, team2 } = generator.generateTeams();
+            // const { team1, team2 } = generator.generateTeams();
+            const { team1, team2 } = generator.generateFatties();
             this.setState({team1, team2}, () => {
                 this.initTeamReveal();
             });

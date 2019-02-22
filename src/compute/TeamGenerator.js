@@ -8,6 +8,21 @@ export default class TeamGenerator {
         this.settings = settings;
     }
 
+    generateFatties() {
+        let { players } = playerData;
+        const fatty = players.find(p => p.name === 'Fat Lever');
+        const team = [];
+        for(let i = 0; i < this.settings.teamSize; i++) {
+            team.push(fatty);
+            team[i].versionIndex = Math.floor(Math.random() * fatty.versions.length);
+        }
+
+        return {
+            team1: team,
+            team2: team
+        }
+    }
+
     /**
      * Generates teams given the constraints of the current settings.
      * @returns {{team1: Array of players, team2: Array of players}}
