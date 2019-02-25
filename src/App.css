@@ -315,3 +315,59 @@ button::-moz-focus-inner {
         width: 95%;
     }
 }
+
+/* iPhone X */
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 812px)
+and (-webkit-min-device-pixel-ratio: 3) {
+    .button-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button {
+        width: 70%;
+        margin-right: 0;
+        margin-bottom: 16px;
+    }
+
+    .Step {
+        margin-bottom: 50px;
+    }
+
+    .RandomizationModeButtons__row-1 {
+        margin-bottom: 0;
+    }
+
+    .AdditionalSettings {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .Setting {
+        width: 100%;
+    }
+
+    .teams-container {
+        width: 100%;
+    }
+
+    .TeamRoster {
+        float: none;
+        width: 100%;
+        margin-bottom: 50px;
+    }
+
+    .teams-container {
+        height: 950px;
+    }
+
+    .Player {
+        margin-left: 40px;
+    }
+
+    .error {
+        width: 95%;
+    }
+}
