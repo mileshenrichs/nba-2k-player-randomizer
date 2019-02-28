@@ -30,7 +30,7 @@ class App extends Component {
             team1: [],
             team2: [],
             error: undefined,
-            fattyMode: true
+            fattyMode: false
         };
     }
 
