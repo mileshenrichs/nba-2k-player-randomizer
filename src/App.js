@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import UsageLogger from './logging/UsageLogger';
 import loaderSrc from './assets/loader.gif';
 import errorIconSrc from './assets/error.png';
 import Step from "./components/Step";
@@ -90,6 +91,7 @@ class App extends Component {
             }
             this.setState({team1, team2}, () => {
                 this.initTeamReveal();
+                UsageLogger.sendLog(this.state);
             });
         } catch(err) {
             this.setState({
