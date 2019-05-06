@@ -28,3 +28,6 @@ data-processing/target
 
 data-processing/src/main/resources/player-versions.csv
 data-processing/src/main/resources/player-versions-clean.csv
+
+data-processing/log-analyzer/src/main/resources/application.properties
+data-processing/log-analyzer/target
