@@ -1,12 +1,16 @@
+package playerdata;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import playerdata.models.Player;
+import playerdata.models.PlayerVersion;
 
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class JSONWriter {
+class JSONWriter {
 
     static void writeAllPlayersToJSONFile(String outputFileName, List<Player> players) throws Exception {
         // establish output path, instantiate PrintWriter

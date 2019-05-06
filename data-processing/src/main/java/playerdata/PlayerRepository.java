@@ -1,5 +1,11 @@
+package playerdata;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import playerdata.models.Player;
+import playerdata.models.PlayerVersion;
+import playerdata.models.Position;
+import playerdata.models.SeasonStatline;
 
 import java.io.*;
 import java.net.URL;
@@ -7,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class PlayerRepository {
+class PlayerRepository {
     private Map<String, Position> positionCodeMap;
     private String modernTeamNamesStr = "ATL BKN BOS CHA CHI CLE DAL DEN DET GSW HOU IND LAC LAL MEM MIA MIL MIN NOH NOP " +
             "NYK OKC ORL PHI PHX POR SAC SAS TOR UTA WAS";
@@ -17,7 +23,7 @@ public class PlayerRepository {
         this.positionCodeMap = buildPositionCodeMap();
     }
 
-    List<SeasonStatline> getSeasonStatlines() {
+    private List<SeasonStatline> getSeasonStatlines() {
         try {
             List<SeasonStatline> statlines = new ArrayList<>();
 
@@ -37,15 +43,15 @@ public class PlayerRepository {
 
             return statlines;
         } catch (FileNotFoundException e) {
-            System.out.println("FileNotFoundException in PlayerRepository.getPlayers() -- input file not found");
+            System.out.println("FileNotFoundException in playerdata.PlayerRepository.getPlayers() -- input file not found");
         } catch (IOException e) {
-            System.out.println("IOException in PlayerRepository.getPlayers() -- problem reading line of input file");
+            System.out.println("IOException in playerdata.PlayerRepository.getPlayers() -- problem reading line of input file");
         }
 
         return null;
     }
 
-    List<Player> getPlayers() {
+    private List<Player> getPlayers() {
         Map<String, Player> players = new HashMap<>();
         Map<String, List<PlayerVersion>> playerVersions = getPlayerVersionsMap();
 
@@ -108,7 +114,7 @@ public class PlayerRepository {
     List<Player> getRelevantPlayers() {
         List<Player> players = getPlayers();
 
-        // at least 6 points per game
+        // at least 4 points per game
         players.removeIf(p -> p.pointsPerGame() < 4);
 
         // played for multiple years

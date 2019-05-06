@@ -1,20 +1,22 @@
+package playerdata.models;
+
 import java.util.List;
 
 public class Player {
-    String name;
-    Position position;
-    int earliestYearPlayed;
-    int latestYearPlayed;
-    int careerGames;
-    int careerPoints;
-    List<PlayerVersion> versions;
+    public String name;
+    public Position position;
+    public int earliestYearPlayed;
+    public int latestYearPlayed;
+    public int careerGames;
+    public int careerPoints;
+    public List<PlayerVersion> versions;
 
-    Player(String n, Position p) {
+    public Player(String n, Position p) {
         this.name = n;
         this.position = p;
     }
 
-    float pointsPerGame() {
+    public float pointsPerGame() {
         return (float) careerPoints / careerGames;
     }
 

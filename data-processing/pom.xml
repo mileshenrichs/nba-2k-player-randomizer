@@ -8,8 +8,12 @@
     <artifactId>nba2kplayerrandomizer</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependencies>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
+    <dependencies>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -27,8 +31,6 @@
             <artifactId>opencsv</artifactId>
             <version>4.5</version>
         </dependency>
-
-
     </dependencies>
 
 </project>

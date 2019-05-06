@@ -1,3 +1,5 @@
+package playerdata;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
@@ -5,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import playerdata.models.PlayerVersion;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -69,7 +72,7 @@ public class NBA2KRatingsScraper {
             Element playerNotAvailableElement = doc.selectFirst(".table-player p");
             if(playerNotAvailableElement != null
                     && playerNotAvailableElement.text().equals("This player is not available on NBA 2K19.")) {
-                System.out.println("INFO: Player not available in game: " + playerUrl);
+                System.out.println("INFO: playerdata.models.Player not available in game: " + playerUrl);
                 return versions;
             }
 
@@ -121,7 +124,7 @@ public class NBA2KRatingsScraper {
                 }
             }
         } else {
-            System.out.println("Player page was null for " + playerUrl);
+            System.out.println("playerdata.models.Player page was null for " + playerUrl);
         }
 
         return versions;
@@ -174,7 +177,7 @@ public class NBA2KRatingsScraper {
     private static void writeCSVRow(String playerName, PlayerVersion version) {
         String[] row = {playerName, version.team, String.valueOf(version.rating), String.valueOf(version.isCurrent)};
         writer.writeNext(row);
-        System.out.println("   Player version written for " + playerName);
+        System.out.println("   playerdata.models.Player version written for " + playerName);
     }
 
     private static void closeWriter() {

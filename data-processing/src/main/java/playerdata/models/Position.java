@@ -1,3 +1,5 @@
+package playerdata.models;
+
 public enum Position {
     POINT_GUARD,
     SHOOTING_GUARD,

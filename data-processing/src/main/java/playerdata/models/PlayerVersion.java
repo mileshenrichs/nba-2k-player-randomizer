@@ -1,9 +1,11 @@
-public class PlayerVersion {
-    String team;
-    int rating;
-    boolean isCurrent;
+package playerdata.models;
 
-    PlayerVersion(String team, int rating) {
+public class PlayerVersion {
+    public String team;
+    public int rating;
+    public boolean isCurrent;
+
+    public PlayerVersion(String team, int rating) {
         this.team = team;
         this.rating = rating;
     }

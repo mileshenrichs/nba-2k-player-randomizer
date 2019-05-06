@@ -1,11 +1,13 @@
+package playerdata;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HTTPRequestUtil {
+class HTTPRequestUtil {
 
-    public static String getPageHTML(String url) {
+    static String getPageHTML(String url) {
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
