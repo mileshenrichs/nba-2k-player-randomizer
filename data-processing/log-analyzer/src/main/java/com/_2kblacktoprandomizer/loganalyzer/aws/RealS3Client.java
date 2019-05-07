@@ -39,7 +39,7 @@ public class RealS3Client implements S3Client {
 
     private List<String> logFileNames = new ArrayList<>();
 
-    private int nextLogFileIndex = 1;
+    private int nextLogFileIndex = 0;
 
     public boolean hasNextLogFile() {
         return nextLogFileIndex < logFileNames.size();

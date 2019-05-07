@@ -54,10 +54,6 @@ public class LogFetcher {
             throws IOException, ParseException {
         logger.info("Collecting log entries from file: " + logFile.getName());
 
-        if(logFile.getName().equals("log0.txt")) {
-            return;
-        }
-
         ObjectMapper objectMapper = new ObjectMapper();
         String logFileStr = readFile(logFile);
         String[] logEntryStrings = logFileStr.split("\n--------------------\n");

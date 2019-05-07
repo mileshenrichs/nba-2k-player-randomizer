@@ -40,6 +40,8 @@ public class ReportData {
     public float percentageMinPlayerRatingSet = 0;
     public float averageMinPlayerRating = 0;
 
+    protected ReportData() { }
+
     public ReportData(Date from, Date to) {
         this.fromDate = from;
         this.toDate = to;

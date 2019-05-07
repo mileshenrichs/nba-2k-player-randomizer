@@ -5,17 +5,25 @@ import com._2kblacktoprandomizer.loganalyzer.models.LogEntry;
 import com._2kblacktoprandomizer.loganalyzer.models.Player;
 import com._2kblacktoprandomizer.loganalyzer.models.RandomizationMode;
 import com._2kblacktoprandomizer.loganalyzer.models.report.ReportData;
+import com._2kblacktoprandomizer.loganalyzer.models.report.ReportsMetadata;
 import com.amazonaws.AmazonServiceException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportGenerator {
@@ -133,11 +141,61 @@ public class ReportGenerator {
         report.averageMinPlayerPPG /= (report.percentageMinPlayerPPGSet * report.totalRandomizations);
         report.averageMinPlayerRating /= (report.percentageMinPlayerRatingSet * report.totalRandomizations);
 
+        // Sort player frequencies in descending order
+        report.playerFrequencies = report.playerFrequencies
+                .entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (e1, e2) -> e2, LinkedHashMap::new));
+
         return saveReportJson(report);
     }
 
-    private int saveReportJson(ReportData report) {
-        return 0;
+    private int saveReportJson(ReportData report) throws IOException {
+        // Update reports metadata
+        ReportsMetadata reportsMetadata = readMetadataFile();
+        int reportId = reportsMetadata.addGeneratedReport(report);
+        writeUpdatedMetadataFile(reportsMetadata);
+
+        // Write report data to file
+        ObjectMapper objectMapper = new ObjectMapper();
+        File outputFile = getHandleForReportJsonFileWithId(reportId);
+        objectMapper.writeValue(outputFile, report);
+
+        return reportId;
+    }
+
+    private ReportsMetadata readMetadataFile() throws IOException {
+        ReportsMetadata reportsMetadata;
+        File reportsMetaFile = getReportsMetadataFile();
+        if(reportsMetaFile.exists()) {
+            String contents = new String(Files.readAllBytes(reportsMetaFile.toPath()), Charset.forName("UTF-8"));
+            ObjectMapper objectMapper = new ObjectMapper();
+            reportsMetadata = objectMapper.readValue(contents, ReportsMetadata.class);
+        } else {
+            reportsMetadata = new ReportsMetadata();
+        }
+
+        return reportsMetadata;
+    }
+
+    private void writeUpdatedMetadataFile(ReportsMetadata updatedMetadata) throws IOException {
+        File reportsMetaFile = getReportsMetadataFile();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(reportsMetaFile, updatedMetadata);
+    }
+
+    private File getReportsMetadataFile() {
+        Path currentPath = Paths.get(System.getProperty("user.dir"));
+        Path metaFilePath = Paths.get(currentPath.toString(), "src", "main", "resources", "reports", "meta.json");
+        return new File(metaFilePath.toUri());
+    }
+
+    private File getHandleForReportJsonFileWithId(int reportId) {
+        Path currentPath = Paths.get(System.getProperty("user.dir"));
+        Path metaFilePath = Paths.get(currentPath.toString(), "src", "main", "resources", "reports", reportId + ".json");
+        return new File(metaFilePath.toUri());
     }
 
 }
