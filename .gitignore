@@ -31,3 +31,5 @@ data-processing/src/main/resources/player-versions-clean.csv
 
 data-processing/log-analyzer/src/main/resources/application.properties
 data-processing/log-analyzer/target
+data-processing/log-analyzer/tmp
+data-processing/log-analyzer/src/main/resources/reports
