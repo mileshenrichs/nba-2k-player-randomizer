@@ -33,3 +33,11 @@ data-processing/log-analyzer/src/main/resources/application.properties
 data-processing/log-analyzer/target
 data-processing/log-analyzer/tmp
 data-processing/log-analyzer/src/main/resources/reports
+
+
+data-processing/log-analyzer/log-analyzer-frontend/node_modules
+data-processing/log-analyzer/log-analyzer-frontend/.pnp
+
+data-processing/log-analyzer/log-analyzer-frontend/coverage
+
+data-processing/log-analyzer/log-analyzer-frontend/build

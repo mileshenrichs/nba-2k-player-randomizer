@@ -1,10 +1,9 @@
 package com._2kblacktoprandomizer.loganalyzer.controllers;
 
-import com._2kblacktoprandomizer.loganalyzer.models.Player;
-import com._2kblacktoprandomizer.loganalyzer.models.report.ReportData;
+import com._2kblacktoprandomizer.loganalyzer.models.report.Report;
+import com._2kblacktoprandomizer.loganalyzer.models.report.ReportsMetadata;
 import com._2kblacktoprandomizer.loganalyzer.reportgeneration.ReportGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 @RestController
+@CrossOrigin
 public class ReportController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -53,7 +54,7 @@ public class ReportController {
         return generatedReportId;
     }
 
-    @GetMapping(value = "/get-report/{reportId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/reports/{reportId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getReport(@PathVariable int reportId) throws IOException {
         logger.info("Fetching report with id: " + reportId);
 
@@ -61,6 +62,18 @@ public class ReportController {
                 .getResource("reports/" + reportId + ".json").getFile());
 
         return new String(Files.readAllBytes(reportFile.toPath()), Charset.forName("UTF-8"));
+    }
+
+    @GetMapping(value = "/reports", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Report> getExistingReports() throws IOException {
+        logger.info("Fetching all existing reports");
+
+        File metaFile = new File(getClass().getClassLoader()
+                .getResource("reports/meta.json").getFile());
+
+        ReportsMetadata reportsMetadata = new ObjectMapper().readValue(metaFile, ReportsMetadata.class);
+
+        return reportsMetadata.getGeneratedReports();
     }
 
 }
