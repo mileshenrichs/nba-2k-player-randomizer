@@ -91,7 +91,7 @@ class App extends Component {
             }
             this.setState({team1, team2}, () => {
                 this.initTeamReveal();
-                UsageLogger.sendLog(this.state);
+                // UsageLogger.sendLog(this.state);
             });
         } catch(err) {
             this.setState({
@@ -179,7 +179,7 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="container">
-                    <h1>NBA 2K19 Blacktop Player Randomizer</h1>
+                    <h1>NBA 2K20 Blacktop Player Randomizer</h1>
 
                     <Step title="Choose a team size" renderPoint={0} currentPointIndex={this.state.currentPointIndex}>
                         <TeamSizeButtons

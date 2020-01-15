@@ -4,18 +4,19 @@ import com._2kblacktoprandomizer.loganalyzer.models.report.Report;
 import com._2kblacktoprandomizer.loganalyzer.models.report.ReportsMetadata;
 import com._2kblacktoprandomizer.loganalyzer.reportgeneration.ReportGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -58,20 +59,18 @@ public class ReportController {
     public String getReport(@PathVariable int reportId) throws IOException {
         logger.info("Fetching report with id: " + reportId);
 
-        File reportFile = new File(getClass().getClassLoader()
-                .getResource("reports/" + reportId + ".json").getFile());
+        InputStream reportInputStream = new ClassPathResource("reports/" + reportId + ".json").getInputStream();
 
-        return new String(Files.readAllBytes(reportFile.toPath()), Charset.forName("UTF-8"));
+        return IOUtils.toString(reportInputStream, StandardCharsets.UTF_8);
     }
 
     @GetMapping(value = "/reports", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Report> getExistingReports() throws IOException {
         logger.info("Fetching all existing reports");
 
-        File metaFile = new File(getClass().getClassLoader()
-                .getResource("reports/meta.json").getFile());
+        InputStream metaFileStream = new ClassPathResource("reports/meta.json").getInputStream();
 
-        ReportsMetadata reportsMetadata = new ObjectMapper().readValue(metaFile, ReportsMetadata.class);
+        ReportsMetadata reportsMetadata = new ObjectMapper().readValue(metaFileStream, ReportsMetadata.class);
 
         return reportsMetadata.getGeneratedReports();
     }
